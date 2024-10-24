@@ -20,26 +20,31 @@ import { Route as ProductsIdImport } from './routes/products/$id'
 // Create/Update Routes
 
 const AboutRoute = AboutImport.update({
+  id: '/about',
   path: '/about',
   getParentRoute: () => rootRoute,
 } as any)
 
 const IndexRoute = IndexImport.update({
+  id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
 
 const ProductsIndexRoute = ProductsIndexImport.update({
+  id: '/products/',
   path: '/products/',
   getParentRoute: () => rootRoute,
 } as any)
 
 const ProductsSearchRoute = ProductsSearchImport.update({
+  id: '/products/search',
   path: '/products/search',
   getParentRoute: () => rootRoute,
 } as any)
 
 const ProductsIdRoute = ProductsIdImport.update({
+  id: '/products/$id',
   path: '/products/$id',
   getParentRoute: () => rootRoute,
 } as any)
