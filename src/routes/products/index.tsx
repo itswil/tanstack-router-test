@@ -15,7 +15,7 @@ function Products() {
 	const data = Route.useLoaderData();
 	return (
 		<div className="p-2">
-			<h3>Products</h3>
+			<h1 className="text-3xl">Products</h1>
 			<ul>
 				{data.products.map((product) => (
 					<li key={product.id}>

@@ -60,7 +60,7 @@ function Search() {
 	};
 	return (
 		<div className="p-2">
-			<h3>Search</h3>
+			<h1 className="text-3xl">Search</h1>
 			<input
 				type="text"
 				value={searchTerm}
@@ -100,7 +100,7 @@ function Search() {
 
 			{/* <pre>{JSON.stringify(dataCategories, null, 2)}</pre> */}
 
-			<h3>Products</h3>
+			<h1 className="text-3xl">Products</h1>
 			<ul>
 				{dataProducts.products.map((product) => (
 					<li key={product.id}>

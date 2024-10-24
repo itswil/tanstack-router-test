@@ -38,7 +38,7 @@ function Product() {
 	return (
 		<div className="p-2">
 			<img src={product.thumbnail} alt={product.title} />
-			<h3>{product.title}</h3>
+			<h1 className="text-3xl">{product.title}</h1>
 			<p>{product.description}</p>
 			<p>Rating: {product.rating}</p>
 			<p>Price: {product.price}</p>
