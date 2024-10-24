@@ -20,6 +20,7 @@ export const Route = createFileRoute("/products/$id")({
 			<div>
 				{error.message}
 				<button
+					type="button"
 					onClick={() => {
 						// Invalidate the route to reload the loader, which will also reset the error boundary
 						router.invalidate();
