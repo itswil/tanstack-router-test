@@ -18,8 +18,8 @@
 		"vite": "^5.4.10"
 	},
 	"dependencies": {
-		"@tanstack/react-router": "^1.76.1",
-		"@tanstack/router-devtools": "^1.76.1",
+		"@tanstack/react-router": "^1.76.3",
+		"@tanstack/router-devtools": "^1.76.3",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
 		"zod": "^3.23.8"
