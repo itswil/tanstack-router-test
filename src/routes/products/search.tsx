@@ -1,12 +1,22 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { queryOptions } from "@tanstack/react-query";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
 import type { ProductsResponse } from "../../types/product";
 
-async function getProductCategories(): Promise<Array<string>> {
-	const response = await fetch("https://dummyjson.com/products/category-list");
+const ENDPOINT_URL = "https://dummyjson.com/products/category-list";
+
+const fetchCategoryList = async (): Promise<Array<string>> => {
+	const response = await fetch(ENDPOINT_URL);
 	return await response.json();
-}
+};
+
+const optionsCategoryList = queryOptions({
+	queryKey: [ENDPOINT_URL],
+	queryFn: () => fetchCategoryList(),
+	staleTime: Number.POSITIVE_INFINITY,
+});
 
 type GetProductsParams = {
 	q: string;
@@ -38,10 +48,10 @@ export const Route = createFileRoute("/products/search")({
 		order,
 		sortBy,
 	}),
-	loader: async ({ deps: { q, order, sortBy } }) => {
+	loader: async ({ context: { queryClient }, deps: { q, order, sortBy } }) => {
 		return {
 			dataProducts: await getProducts({ q, order, sortBy }),
-			dataCategories: await getProductCategories(),
+			dataCategories: queryClient.ensureQueryData(optionsCategoryList),
 			// suppose I need categories for a drop down, how do I set staleTime for this ONLY?
 			// https://tanstack.com/router/v1/docs/framework/react/guide/data-loading#using-staletime-to-control-how-long-data-is-considered-fresh
 		};
@@ -51,6 +61,8 @@ export const Route = createFileRoute("/products/search")({
 
 function Search() {
 	const { dataProducts } = Route.useLoaderData();
+	const { data: dataCategories } = useSuspenseQuery(optionsCategoryList);
+
 	const { q, order, sortBy } = Route.useSearch();
 	const navigate = useNavigate({ from: Route.fullPath });
 	const [searchTerm, setSearchTerm] = useState(q || "");
@@ -98,7 +110,7 @@ function Search() {
 				</option>
 			</select>
 
-			{/* <pre>{JSON.stringify(dataCategories, null, 2)}</pre> */}
+			<pre>{JSON.stringify(dataCategories, null, 2)}</pre>
 
 			<h1 className="text-3xl">Products</h1>
 			<ul>
