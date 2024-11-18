@@ -30,13 +30,16 @@ export const Route = createFileRoute("/products/search")({
 });
 
 function Search() {
-	const search = Route.useSearch();
-	const searchQuery = useSuspenseQuery(productsQueries.search(search));
+	const { q, order, sortBy } = Route.useSearch();
+
+	const searchQuery = useSuspenseQuery(
+		productsQueries.search({ q, order, sortBy }),
+	);
 	const productsResponse = searchQuery.data;
+
 	const categoriesQuery = useSuspenseQuery(productsQueries.categories());
 	const categories = categoriesQuery.data;
 
-	const { q, order, sortBy } = Route.useSearch();
 	const navigate = useNavigate({ from: Route.fullPath });
 	const [searchTerm, setSearchTerm] = useState(q || "");
 
