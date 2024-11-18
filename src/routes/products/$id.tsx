@@ -1,17 +1,10 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
-import type { ProductResponse } from "../../types/product";
-
-type GetProductParams = {
-	id: string;
-};
-async function getProduct({ id }: GetProductParams): Promise<ProductResponse> {
-	const URL = "https://dummyjson.com/products/{id}";
-	const response = await fetch(URL.replace("{id}", id));
-	return await response.json();
-}
+import { productsQueries } from "../../queries/products";
 
 export const Route = createFileRoute("/products/$id")({
-	loader: async ({ params }) => await getProduct(params),
+	loader: ({ context: { queryClient }, params }) =>
+		queryClient.ensureQueryData(productsQueries.detail(params.id)),
 	component: Product,
 	errorComponent: ({ error, reset }) => {
 		const router = useRouter();
@@ -34,7 +27,10 @@ export const Route = createFileRoute("/products/$id")({
 });
 
 function Product() {
-	const product = Route.useLoaderData();
+	const { id } = Route.useParams();
+	const productQuery = useSuspenseQuery(productsQueries.detail(id));
+	const product = productQuery.data;
+
 	return (
 		<div className="p-2">
 			<img src={product.thumbnail} alt={product.title} />

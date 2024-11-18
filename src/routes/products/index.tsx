@@ -1,23 +1,23 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import type { ProductsResponse } from "../../types/product";
-
-async function getProducts(): Promise<ProductsResponse> {
-	const response = await fetch("https://dummyjson.com/products");
-	return await response.json();
-}
+import { productsQueries } from "../../queries/products";
 
 export const Route = createFileRoute("/products/")({
-	loader: async () => await getProducts(),
+	loader: ({ context: { queryClient } }) =>
+		queryClient.ensureQueryData(productsQueries.list()),
+	errorComponent: () => <div>Oh no! Products List Error</div>,
 	component: Products,
 });
 
 function Products() {
-	const data = Route.useLoaderData();
+	const productListQuery = useSuspenseQuery(productsQueries.list());
+	const productsResponse = productListQuery.data;
+
 	return (
 		<div className="p-2">
 			<h1 className="text-3xl">Products</h1>
 			<ul>
-				{data.products.map((product) => (
+				{productsResponse.products.map((product) => (
 					<li key={product.id}>
 						<Link to={"/products/$id"} params={{ id: `${product.id}` }}>
 							{product.title}
