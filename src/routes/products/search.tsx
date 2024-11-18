@@ -1,39 +1,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { queryOptions } from "@tanstack/react-query";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
 import { productsQueries } from "../../queries/products";
-import type { ProductsResponse } from "../../types/product";
-
-const ENDPOINT_URL = "https://dummyjson.com/products/category-list";
-
-const fetchCategoryList = async (): Promise<Array<string>> => {
-	const response = await fetch(ENDPOINT_URL);
-	return await response.json();
-};
-
-const optionsCategoryList = queryOptions({
-	queryKey: [ENDPOINT_URL],
-	queryFn: () => fetchCategoryList(),
-	staleTime: Number.POSITIVE_INFINITY,
-});
-
-type GetProductsParams = {
-	q: string;
-	order: string;
-	sortBy: string;
-};
-async function getProducts({
-	q,
-	order,
-	sortBy,
-}: GetProductsParams): Promise<ProductsResponse> {
-	const response = await fetch(
-		`https://dummyjson.com/products/search?${new URLSearchParams({ q, order, sortBy })}`,
-	);
-	return await response.json();
-}
 
 const productSearchParamsSchema = z.object({
 	q: z.string().default(""),
@@ -51,17 +20,21 @@ export const Route = createFileRoute("/products/search")({
 	}),
 	loader: async ({ context: { queryClient }, deps: { q, order, sortBy } }) => {
 		return {
-			dataProducts: await getProducts({ q, order, sortBy }),
+			dataProducts: queryClient.ensureQueryData(
+				productsQueries.search({ q, order, sortBy }),
+			),
 			dataCategories: queryClient.ensureQueryData(productsQueries.categories()),
-			// suppose I need categories for a drop down, how do I set staleTime for this ONLY?
-			// https://tanstack.com/router/v1/docs/framework/react/guide/data-loading#using-staletime-to-control-how-long-data-is-considered-fresh
 		};
 	},
 	component: Search,
 });
 
 function Search() {
-	const { dataCategories, dataProducts } = Route.useLoaderData();
+	const search = Route.useSearch();
+	const searchQuery = useSuspenseQuery(productsQueries.search(search));
+	const productsResponse = searchQuery.data;
+	const categoriesQuery = useSuspenseQuery(productsQueries.categories());
+	const categories = categoriesQuery.data;
 
 	const { q, order, sortBy } = Route.useSearch();
 	const navigate = useNavigate({ from: Route.fullPath });
@@ -110,11 +83,11 @@ function Search() {
 				</option>
 			</select>
 
-			<pre>{JSON.stringify(dataCategories, null, 2)}</pre>
+			<pre>{JSON.stringify(categories, null, 2)}</pre>
 
 			<h1 className="text-3xl">Products</h1>
 			<ul>
-				{dataProducts.products.map((product) => (
+				{productsResponse.products.map((product) => (
 					<li key={product.id}>
 						<Link to={"/products/$id"} params={{ id: `${product.id}` }}>
 							{product.title}

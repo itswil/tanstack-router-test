@@ -16,6 +16,22 @@ const fetchProducts = async (): Promise<ProductsResponse> => {
 	return await response.json();
 };
 
+type SearchParams = {
+	q: string;
+	order: string;
+	sortBy: string;
+};
+async function fetchProductsSearch({
+	q,
+	order,
+	sortBy,
+}: SearchParams): Promise<ProductsResponse> {
+	const response = await fetch(
+		`https://dummyjson.com/products/search?${new URLSearchParams({ q, order, sortBy })}`,
+	);
+	return await response.json();
+}
+
 // https://tkdodo.eu/blog/the-query-options-api#query-factories
 export const productsQueries = {
 	all: () => ["products"],
@@ -38,5 +54,11 @@ export const productsQueries = {
 		queryOptions({
 			queryKey: [...productsQueries.all(), "list"],
 			queryFn: () => fetchProducts(),
+		}),
+
+	search: (filters: SearchParams) =>
+		queryOptions({
+			queryKey: [...productsQueries.all(), filters],
+			queryFn: () => fetchProductsSearch(filters),
 		}),
 };
