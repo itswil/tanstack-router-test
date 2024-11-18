@@ -3,6 +3,7 @@ import { queryOptions } from "@tanstack/react-query";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
+import { productsQueries } from "../../queries/products";
 import type { ProductsResponse } from "../../types/product";
 
 const ENDPOINT_URL = "https://dummyjson.com/products/category-list";
@@ -51,7 +52,7 @@ export const Route = createFileRoute("/products/search")({
 	loader: async ({ context: { queryClient }, deps: { q, order, sortBy } }) => {
 		return {
 			dataProducts: await getProducts({ q, order, sortBy }),
-			dataCategories: queryClient.ensureQueryData(optionsCategoryList),
+			dataCategories: queryClient.ensureQueryData(productsQueries.categories()),
 			// suppose I need categories for a drop down, how do I set staleTime for this ONLY?
 			// https://tanstack.com/router/v1/docs/framework/react/guide/data-loading#using-staletime-to-control-how-long-data-is-considered-fresh
 		};
@@ -60,8 +61,7 @@ export const Route = createFileRoute("/products/search")({
 });
 
 function Search() {
-	const { dataProducts } = Route.useLoaderData();
-	const { data: dataCategories } = useSuspenseQuery(optionsCategoryList);
+	const { dataCategories, dataProducts } = Route.useLoaderData();
 
 	const { q, order, sortBy } = Route.useSearch();
 	const navigate = useNavigate({ from: Route.fullPath });

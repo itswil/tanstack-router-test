@@ -1,18 +1,16 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
+import { productsQueries } from "../../queries/products";
 import type { ProductsResponse } from "../../types/product";
 
-async function getProducts(): Promise<ProductsResponse> {
-	const response = await fetch("https://dummyjson.com/products");
-	return await response.json();
-}
-
 export const Route = createFileRoute("/products/")({
-	loader: async () => await getProducts(),
+	loader: ({ context: { queryClient } }) =>
+		queryClient.ensureQueryData(productsQueries.list()),
 	component: Products,
 });
 
 function Products() {
 	const data = Route.useLoaderData();
+
 	return (
 		<div className="p-2">
 			<h1 className="text-3xl">Products</h1>
