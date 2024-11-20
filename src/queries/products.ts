@@ -1,4 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
+import type { ProductSearchParams } from "../routes/products/search";
 import type { ProductResponse, ProductsResponse } from "../types/product";
 
 const fetchCategoryList = async (): Promise<Array<string>> => {
@@ -16,16 +17,11 @@ const fetchProducts = async (): Promise<ProductsResponse> => {
 	return await response.json();
 };
 
-type SearchParams = {
-	q: string;
-	order: string;
-	sortBy: string;
-};
 async function fetchProductsSearch({
 	q,
 	order,
 	sortBy,
-}: SearchParams): Promise<ProductsResponse> {
+}: ProductSearchParams): Promise<ProductsResponse> {
 	const response = await fetch(
 		`https://dummyjson.com/products/search?${new URLSearchParams({ q, order, sortBy })}`,
 	);
@@ -56,7 +52,7 @@ export const productsQueries = {
 			queryFn: () => fetchProducts(),
 		}),
 
-	search: (filters: SearchParams) =>
+	search: (filters: ProductSearchParams) =>
 		queryOptions({
 			queryKey: [...productsQueries.all(), filters],
 			queryFn: () => fetchProductsSearch(filters),

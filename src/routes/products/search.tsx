@@ -9,7 +9,7 @@ const productSearchParamsSchema = z.object({
 	order: z.string().default("asc"),
 	sortBy: z.string().default("title"),
 });
-type ProductSearchParams = z.infer<typeof productSearchParamsSchema>;
+export type ProductSearchParams = z.infer<typeof productSearchParamsSchema>;
 
 export const Route = createFileRoute("/products/search")({
 	validateSearch: productSearchParamsSchema,
