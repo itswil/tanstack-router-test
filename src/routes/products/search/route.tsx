@@ -43,15 +43,20 @@ function Layout() {
 	return (
 		<div className="p-2 border-2 border-slate-300">
 			<h1 className="text-3xl">Search</h1>
-			<input
-				type="text"
-				value={searchTerm}
-				onChange={(e) => setSearchTerm(e.target.value)}
-			/>
-			<button type="button" onClick={() => updateSearch("q", searchTerm)}>
-				Search
-			</button>
-			<br />
+
+			<form
+				onSubmit={(event) => {
+					event?.preventDefault();
+					updateSearch("q", searchTerm);
+				}}
+			>
+				<input
+					type="text"
+					value={searchTerm}
+					onChange={(e) => setSearchTerm(e.target.value)}
+				/>
+				<button type="button">Search</button>
+			</form>
 
 			<select
 				name="sortBy"
@@ -90,7 +95,7 @@ function Layout() {
 					</option>
 				))}
 			</select>
-			<p>(this doesn't actually do anything)</p>
+			<span>(this doesn't actually do anything)</span>
 
 			<Outlet />
 		</div>
