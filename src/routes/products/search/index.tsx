@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
-import { productsQueries } from "../../../queries/products";
+import { productsQueries } from "~/queries/products";
 
 const productSearchParamsSchema = z.object({
 	q: z.string().default(""),

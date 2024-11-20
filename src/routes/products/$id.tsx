@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { productsQueries } from "../../queries/products";
+import { productsQueries } from "~/queries/products";
 
 export const Route = createFileRoute("/products/$id")({
 	loader: ({ context: { queryClient }, params }) =>

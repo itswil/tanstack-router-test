@@ -1,6 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
-import type { ProductSearchParams } from "../routes/products/search";
-import type { ProductResponse, ProductsResponse } from "../types/product";
+import type { ProductSearchParams } from "~/routes/products/search";
+import type { ProductResponse, ProductsResponse } from "~/types/product";
 
 const fetchCategoryList = async (): Promise<Array<string>> => {
 	const response = await fetch("https://dummyjson.com/products/category-list");
