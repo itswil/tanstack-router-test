@@ -6,6 +6,7 @@ export const Route = createFileRoute("/products/$id")({
 	loader: ({ context: { queryClient }, params }) =>
 		queryClient.ensureQueryData(productsQueries.detail(params.id)),
 	component: Product,
+	pendingComponent: () => <div>Loading Product...</div>,
 	errorComponent: ({ error, reset }) => {
 		const router = useRouter();
 

@@ -26,6 +26,8 @@ export const Route = createFileRoute("/products/search")({
 			dataCategories: queryClient.ensureQueryData(productsQueries.categories()),
 		};
 	},
+	pendingComponent: () => <div>Loading Search Results...</div>,
+	errorComponent: () => <div>Oh no! Search Results Error</div>,
 	component: Search,
 });
 

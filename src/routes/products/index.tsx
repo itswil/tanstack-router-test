@@ -5,6 +5,7 @@ import { productsQueries } from "../../queries/products";
 export const Route = createFileRoute("/products/")({
 	loader: ({ context: { queryClient } }) =>
 		queryClient.ensureQueryData(productsQueries.list()),
+	pendingComponent: () => <div>Loading Products List...</div>,
 	errorComponent: () => <div>Oh no! Products List Error</div>,
 	component: Products,
 });
