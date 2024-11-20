@@ -9,6 +9,7 @@ export default defineConfig({
 		TanStackRouterVite({}),
 		react(),
 		viteTsConfigPaths({
+			// https://tanstack.com/router/latest/docs/framework/react/start/path-aliases
 			projects: ["./tsconfig.json"],
 		}),
 	],
