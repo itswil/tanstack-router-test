@@ -14,8 +14,9 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProductsIndexImport } from './routes/products/index'
-import { Route as ProductsSearchImport } from './routes/products/search'
 import { Route as ProductsIdImport } from './routes/products/$id'
+import { Route as ProductsSearchRouteImport } from './routes/products/search/route'
+import { Route as ProductsSearchIndexImport } from './routes/products/search/index'
 
 // Create/Update Routes
 
@@ -37,16 +38,22 @@ const ProductsIndexRoute = ProductsIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ProductsSearchRoute = ProductsSearchImport.update({
+const ProductsIdRoute = ProductsIdImport.update({
+  id: '/products/$id',
+  path: '/products/$id',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProductsSearchRouteRoute = ProductsSearchRouteImport.update({
   id: '/products/search',
   path: '/products/search',
   getParentRoute: () => rootRoute,
 } as any)
 
-const ProductsIdRoute = ProductsIdImport.update({
-  id: '/products/$id',
-  path: '/products/$id',
-  getParentRoute: () => rootRoute,
+const ProductsSearchIndexRoute = ProductsSearchIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ProductsSearchRouteRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -67,18 +74,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
+    '/products/search': {
+      id: '/products/search'
+      path: '/products/search'
+      fullPath: '/products/search'
+      preLoaderRoute: typeof ProductsSearchRouteImport
+      parentRoute: typeof rootRoute
+    }
     '/products/$id': {
       id: '/products/$id'
       path: '/products/$id'
       fullPath: '/products/$id'
       preLoaderRoute: typeof ProductsIdImport
-      parentRoute: typeof rootRoute
-    }
-    '/products/search': {
-      id: '/products/search'
-      path: '/products/search'
-      fullPath: '/products/search'
-      preLoaderRoute: typeof ProductsSearchImport
       parentRoute: typeof rootRoute
     }
     '/products/': {
@@ -88,64 +95,91 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsIndexImport
       parentRoute: typeof rootRoute
     }
+    '/products/search/': {
+      id: '/products/search/'
+      path: '/'
+      fullPath: '/products/search/'
+      preLoaderRoute: typeof ProductsSearchIndexImport
+      parentRoute: typeof ProductsSearchRouteImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface ProductsSearchRouteRouteChildren {
+  ProductsSearchIndexRoute: typeof ProductsSearchIndexRoute
+}
+
+const ProductsSearchRouteRouteChildren: ProductsSearchRouteRouteChildren = {
+  ProductsSearchIndexRoute: ProductsSearchIndexRoute,
+}
+
+const ProductsSearchRouteRouteWithChildren =
+  ProductsSearchRouteRoute._addFileChildren(ProductsSearchRouteRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/products/search': typeof ProductsSearchRouteRouteWithChildren
   '/products/$id': typeof ProductsIdRoute
-  '/products/search': typeof ProductsSearchRoute
   '/products': typeof ProductsIndexRoute
+  '/products/search/': typeof ProductsSearchIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/products/$id': typeof ProductsIdRoute
-  '/products/search': typeof ProductsSearchRoute
   '/products': typeof ProductsIndexRoute
+  '/products/search': typeof ProductsSearchIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/products/search': typeof ProductsSearchRouteRouteWithChildren
   '/products/$id': typeof ProductsIdRoute
-  '/products/search': typeof ProductsSearchRoute
   '/products/': typeof ProductsIndexRoute
+  '/products/search/': typeof ProductsSearchIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/products/$id' | '/products/search' | '/products'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/products/search'
+    | '/products/$id'
+    | '/products'
+    | '/products/search/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/products/$id' | '/products/search' | '/products'
+  to: '/' | '/about' | '/products/$id' | '/products' | '/products/search'
   id:
     | '__root__'
     | '/'
     | '/about'
-    | '/products/$id'
     | '/products/search'
+    | '/products/$id'
     | '/products/'
+    | '/products/search/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ProductsSearchRouteRoute: typeof ProductsSearchRouteRouteWithChildren
   ProductsIdRoute: typeof ProductsIdRoute
-  ProductsSearchRoute: typeof ProductsSearchRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ProductsSearchRouteRoute: ProductsSearchRouteRouteWithChildren,
   ProductsIdRoute: ProductsIdRoute,
-  ProductsSearchRoute: ProductsSearchRoute,
   ProductsIndexRoute: ProductsIndexRoute,
 }
 
@@ -161,8 +195,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
-        "/products/$id",
         "/products/search",
+        "/products/$id",
         "/products/"
       ]
     },
@@ -172,14 +206,21 @@ export const routeTree = rootRoute
     "/about": {
       "filePath": "about.tsx"
     },
+    "/products/search": {
+      "filePath": "products/search/route.tsx",
+      "children": [
+        "/products/search/"
+      ]
+    },
     "/products/$id": {
       "filePath": "products/$id.tsx"
     },
-    "/products/search": {
-      "filePath": "products/search.tsx"
-    },
     "/products/": {
       "filePath": "products/index.tsx"
+    },
+    "/products/search/": {
+      "filePath": "products/search/index.tsx",
+      "parent": "/products/search"
     }
   }
 }

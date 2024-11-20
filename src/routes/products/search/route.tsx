@@ -1,8 +1,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Outlet, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
-import { productsQueries } from "../../queries/products";
+import { productsQueries } from "../../../queries/products";
 
 const productSearchParamsSchema = z.object({
 	q: z.string().default(""),
@@ -18,26 +18,18 @@ export const Route = createFileRoute("/products/search")({
 		order,
 		sortBy,
 	}),
-	loader: async ({ context: { queryClient }, deps: { q, order, sortBy } }) => {
+	loader: async ({ context: { queryClient } }) => {
 		return {
-			dataProducts: queryClient.ensureQueryData(
-				productsQueries.search({ q, order, sortBy }),
-			),
 			dataCategories: queryClient.ensureQueryData(productsQueries.categories()),
 		};
 	},
-	pendingComponent: () => <div>Loading Search Results...</div>,
-	errorComponent: () => <div>Oh no! Search Results Error</div>,
-	component: Search,
+	pendingComponent: () => <div>Loading Search Layout...</div>,
+	errorComponent: () => <div>Oh no! Search Layout Error</div>,
+	component: Layout,
 });
 
-function Search() {
+function Layout() {
 	const { q, order, sortBy } = Route.useSearch();
-
-	const searchQuery = useSuspenseQuery(
-		productsQueries.search({ q, order, sortBy }),
-	);
-	const productsResponse = searchQuery.data;
 
 	const categoriesQuery = useSuspenseQuery(productsQueries.categories());
 	const categories = categoriesQuery.data;
@@ -90,16 +82,7 @@ function Search() {
 
 			<pre>{JSON.stringify(categories, null, 2)}</pre>
 
-			<h1 className="text-3xl">Products</h1>
-			<ul>
-				{productsResponse.products.map((product) => (
-					<li key={product.id}>
-						<Link to={"/products/$id"} params={{ id: `${product.id}` }}>
-							{product.title}
-						</Link>
-					</li>
-				))}
-			</ul>
+			<Outlet />
 		</div>
 	);
 }
