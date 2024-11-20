@@ -39,7 +39,7 @@ function Search() {
 
 	return (
 		<div className="p-2 border-2 border-slate-300">
-			<h1 className="text-3xl">Products</h1>
+			<h1 className="text-3xl">Results</h1>
 			<ul>
 				{productsResponse.products.map((product) => (
 					<li key={product.id}>
