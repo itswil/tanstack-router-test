@@ -15,7 +15,7 @@ function Products() {
 	const productsResponse = productListQuery.data;
 
 	return (
-		<div className="p-2">
+		<div className="p-2 border-2 border-slate-300">
 			<h1 className="text-3xl">Products</h1>
 			<ul>
 				{productsResponse.products.map((product) => (

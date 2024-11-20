@@ -41,7 +41,7 @@ function Layout() {
 		navigate({ search: (prev) => ({ ...prev, [key]: value }) });
 	};
 	return (
-		<div className="p-2">
+		<div className="p-2 border-2 border-slate-300">
 			<h1 className="text-3xl">Search</h1>
 			<input
 				type="text"
@@ -65,6 +65,7 @@ function Layout() {
 					Description
 				</option>
 			</select>
+
 			<br />
 
 			<select
@@ -80,7 +81,16 @@ function Layout() {
 				</option>
 			</select>
 
-			<pre>{JSON.stringify(categories, null, 2)}</pre>
+			<br />
+
+			<select name="category">
+				{categories.map((category) => (
+					<option key={category} value={category}>
+						{category}
+					</option>
+				))}
+			</select>
+			<p>(this doesn't actually do anything)</p>
 
 			<Outlet />
 		</div>
