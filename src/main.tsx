@@ -25,6 +25,7 @@ declare module "@tanstack/react-router" {
 	}
 }
 
+// biome-ignore lint/style/noNonNullAssertion: #app is in the DOM of index.html
 const rootElement = document.getElementById("app")!;
 
 if (!rootElement.innerHTML) {
