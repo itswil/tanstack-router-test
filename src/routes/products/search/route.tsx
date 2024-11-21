@@ -44,58 +44,60 @@ function Layout() {
 		<div className="p-4 bg-opacity-20 bg-slate-300 rounded-xl">
 			<h1 className="text-3xl">Search</h1>
 
-			<form
-				onSubmit={(event) => {
-					event?.preventDefault();
-					updateSearch("q", searchTerm);
-				}}
-			>
-				<input
-					type="text"
-					value={searchTerm}
-					onChange={(e) => setSearchTerm(e.target.value)}
-				/>
-				<button type="button">Search</button>
-			</form>
+			<div className="py-4">
+				<form
+					onSubmit={(event) => {
+						event?.preventDefault();
+						updateSearch("q", searchTerm);
+					}}
+				>
+					<input
+						type="text"
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.target.value)}
+					/>
+					<button type="button">Search</button>
+				</form>
 
-			<select
-				name="sortBy"
-				value={sortBy}
-				onChange={(e) => updateSearch("sortBy", e.target.value)}
-			>
-				<option key={"title"} value={"title"}>
-					Title
-				</option>
-				<option key={"description"} value={"description"}>
-					Description
-				</option>
-			</select>
-
-			<br />
-
-			<select
-				name="order"
-				value={order}
-				onChange={(e) => updateSearch("order", e.target.value)}
-			>
-				<option key={"asc"} value={"asc"}>
-					Ascending
-				</option>
-				<option key={"desc"} value={"desc"}>
-					Descending
-				</option>
-			</select>
-
-			<br />
-
-			<select name="category">
-				{categories.map((category) => (
-					<option key={category} value={category}>
-						{category}
+				<select
+					name="sortBy"
+					value={sortBy}
+					onChange={(e) => updateSearch("sortBy", e.target.value)}
+				>
+					<option key={"title"} value={"title"}>
+						Title
 					</option>
-				))}
-			</select>
-			<span>(this doesn't actually do anything)</span>
+					<option key={"description"} value={"description"}>
+						Description
+					</option>
+				</select>
+
+				<br />
+
+				<select
+					name="order"
+					value={order}
+					onChange={(e) => updateSearch("order", e.target.value)}
+				>
+					<option key={"asc"} value={"asc"}>
+						Ascending
+					</option>
+					<option key={"desc"} value={"desc"}>
+						Descending
+					</option>
+				</select>
+
+				<br />
+
+				<select name="category">
+					{categories.map((category) => (
+						<option key={category} value={category}>
+							{category}
+						</option>
+					))}
+				</select>
+				<span>(this doesn't actually do anything)</span>
+			</div>
 
 			<Outlet />
 		</div>
