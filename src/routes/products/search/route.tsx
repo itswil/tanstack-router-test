@@ -41,7 +41,7 @@ function Layout() {
 		navigate({ search: (prev) => ({ ...prev, [key]: value }) });
 	};
 	return (
-		<div className="p-2 border-2 border-slate-300">
+		<div className="p-4 bg-opacity-20 bg-slate-300 rounded-xl">
 			<h1 className="text-3xl">Search</h1>
 
 			<form

@@ -33,7 +33,7 @@ function Product() {
 	const product = productQuery.data;
 
 	return (
-		<div className="p-2 border-2 border-slate-300">
+		<div className="p-4 bg-opacity-20 bg-slate-300 rounded-xl">
 			<img src={product.thumbnail} alt={product.title} />
 			<h1 className="text-3xl">{product.title}</h1>
 			<p>{product.description}</p>

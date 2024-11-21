@@ -51,7 +51,11 @@ function RootComponent() {
 				</Link>
 			</div>
 			<hr />
-			<Outlet />
+
+			<div className="p-4">
+				<Outlet />
+			</div>
+
 			<TanStackRouterDevtools position="bottom-right" />
 		</>
 	);
