@@ -18,11 +18,7 @@ export const Route = createFileRoute("/products/search/")({
 		sortBy,
 	}),
 	loader: async ({ context: { queryClient }, deps: { q, order, sortBy } }) => {
-		return {
-			dataProducts: queryClient.ensureQueryData(
-				productsQueries.search({ q, order, sortBy }),
-			),
-		};
+		queryClient.prefetchQuery(productsQueries.search({ q, order, sortBy }));
 	},
 	pendingComponent: () => <div>Loading Search Results...</div>,
 	errorComponent: () => <div>Oh no! Search Results Error</div>,

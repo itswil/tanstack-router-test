@@ -3,8 +3,9 @@ import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { productsQueries } from "~/queries/products";
 
 export const Route = createFileRoute("/products/$id")({
-	loader: ({ context: { queryClient }, params }) =>
-		queryClient.ensureQueryData(productsQueries.detail(params.id)),
+	loader: ({ context: { queryClient }, params }) => {
+		queryClient.prefetchQuery(productsQueries.detail(params.id));
+	},
 	component: Product,
 	pendingComponent: () => <div>Loading Product...</div>,
 	errorComponent: ({ error, reset }) => {
