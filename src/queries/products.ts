@@ -1,19 +1,23 @@
 import { queryOptions } from "@tanstack/react-query";
+import { API_URL_BASE } from "~/queries/constants";
 import type { ProductSearchParams } from "~/routes/products/search";
 import type { ProductResponse, ProductsResponse } from "~/types/product";
 
+const PATH = "/products";
+const URL = `${API_URL_BASE}${PATH}`;
+
 const fetchCategoryList = async (): Promise<Array<string>> => {
-	const response = await fetch("https://dummyjson.com/products/category-list");
+	const response = await fetch(`${URL}/category-list`);
 	return await response.json();
 };
 
 const fetchProduct = async (id: string): Promise<ProductResponse> => {
-	const response = await fetch(`https://dummyjson.com/products/${id}`);
+	const response = await fetch(`${URL}/${id}`);
 	return await response.json();
 };
 
 const fetchProducts = async (): Promise<ProductsResponse> => {
-	const response = await fetch("https://dummyjson.com/products");
+	const response = await fetch(`${URL}`);
 	return await response.json();
 };
 
@@ -23,7 +27,7 @@ async function fetchProductsSearch({
 	sortBy,
 }: ProductSearchParams): Promise<ProductsResponse> {
 	const response = await fetch(
-		`https://dummyjson.com/products/search?${new URLSearchParams({ q, order, sortBy })}`,
+		`${URL}/search?${new URLSearchParams({ q, order, sortBy })}`,
 	);
 	return await response.json();
 }
