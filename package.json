@@ -11,18 +11,18 @@
 		"start": "vite"
 	},
 	"devDependencies": {
-		"@tanstack/react-query-devtools": "^5.61.0",
-		"@tanstack/router-devtools": "^1.82.2",
-		"@tanstack/router-plugin": "^1.81.9",
+		"@tanstack/react-query-devtools": "^5.61.5",
+		"@tanstack/router-devtools": "^1.84.4",
+		"@tanstack/router-plugin": "^1.84.4",
 		"@types/react": "^18.3.12",
 		"@types/react-dom": "^18.3.1",
-		"@vitejs/plugin-react": "^4.3.3",
-		"vite": "^5.4.11",
+		"@vitejs/plugin-react": "^4.3.4",
+		"vite": "^6.0.1",
 		"vite-tsconfig-paths": "^5.1.3"
 	},
 	"dependencies": {
-		"@tanstack/react-query": "^5.61.0",
-		"@tanstack/react-router": "^1.82.2",
+		"@tanstack/react-query": "^5.61.5",
+		"@tanstack/react-router": "^1.84.4",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
 		"zod": "^3.23.8"
