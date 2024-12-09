@@ -1,4 +1,8 @@
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import {
+	useMutation,
+	useQueryClient,
+	useSuspenseQuery,
+} from "@tanstack/react-query";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { productsQueries } from "~/queries/products";
 import type { ProductResponse } from "~/types/product";
@@ -31,6 +35,7 @@ export const Route = createFileRoute("/products/$id_/edit")({
 
 function Edit() {
 	const { id } = Route.useParams();
+	const queryClient = useQueryClient();
 	const productQuery = useSuspenseQuery(productsQueries.detail(id));
 	const product = productQuery.data;
 
@@ -53,6 +58,9 @@ function Edit() {
 			onSuccess: () => {
 				alert("Product updated successfully!");
 				formData.reset();
+				queryClient.invalidateQueries({
+					queryKey: productsQueries.all(),
+				});
 			},
 		});
 	};
