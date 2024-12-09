@@ -1,5 +1,10 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import {
+	Link,
+	Outlet,
+	createFileRoute,
+	useRouter,
+} from "@tanstack/react-router";
 import { productsQueries } from "~/queries/products";
 
 export const Route = createFileRoute("/products/$id")({
@@ -35,6 +40,9 @@ function Product() {
 
 	return (
 		<div className="p-4 bg-opacity-20 bg-slate-300 rounded-xl">
+			<Link to="/products/$id/edit" params={{ id: `${product.id}` }}>
+				Edit
+			</Link>
 			<img src={product.thumbnail} alt={product.title} />
 			<h1 className="text-3xl">{product.title}</h1>
 			<p>{product.description}</p>

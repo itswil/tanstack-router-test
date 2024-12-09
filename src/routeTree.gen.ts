@@ -17,6 +17,7 @@ import { Route as ProductsIndexImport } from './routes/products/index'
 import { Route as ProductsIdImport } from './routes/products/$id'
 import { Route as ProductsSearchRouteImport } from './routes/products/search/route'
 import { Route as ProductsSearchIndexImport } from './routes/products/search/index'
+import { Route as ProductsIdEditImport } from './routes/products/$id_.edit'
 
 // Create/Update Routes
 
@@ -54,6 +55,12 @@ const ProductsSearchIndexRoute = ProductsSearchIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => ProductsSearchRouteRoute,
+} as any)
+
+const ProductsIdEditRoute = ProductsIdEditImport.update({
+  id: '/products/$id_/edit',
+  path: '/products/$id/edit',
+  getParentRoute: () => rootRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -95,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsIndexImport
       parentRoute: typeof rootRoute
     }
+    '/products/$id_/edit': {
+      id: '/products/$id_/edit'
+      path: '/products/$id/edit'
+      fullPath: '/products/$id/edit'
+      preLoaderRoute: typeof ProductsIdEditImport
+      parentRoute: typeof rootRoute
+    }
     '/products/search/': {
       id: '/products/search/'
       path: '/'
@@ -124,6 +138,7 @@ export interface FileRoutesByFullPath {
   '/products/search': typeof ProductsSearchRouteRouteWithChildren
   '/products/$id': typeof ProductsIdRoute
   '/products': typeof ProductsIndexRoute
+  '/products/$id/edit': typeof ProductsIdEditRoute
   '/products/search/': typeof ProductsSearchIndexRoute
 }
 
@@ -132,6 +147,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/products/$id': typeof ProductsIdRoute
   '/products': typeof ProductsIndexRoute
+  '/products/$id/edit': typeof ProductsIdEditRoute
   '/products/search': typeof ProductsSearchIndexRoute
 }
 
@@ -142,6 +158,7 @@ export interface FileRoutesById {
   '/products/search': typeof ProductsSearchRouteRouteWithChildren
   '/products/$id': typeof ProductsIdRoute
   '/products/': typeof ProductsIndexRoute
+  '/products/$id_/edit': typeof ProductsIdEditRoute
   '/products/search/': typeof ProductsSearchIndexRoute
 }
 
@@ -153,9 +170,16 @@ export interface FileRouteTypes {
     | '/products/search'
     | '/products/$id'
     | '/products'
+    | '/products/$id/edit'
     | '/products/search/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/products/$id' | '/products' | '/products/search'
+  to:
+    | '/'
+    | '/about'
+    | '/products/$id'
+    | '/products'
+    | '/products/$id/edit'
+    | '/products/search'
   id:
     | '__root__'
     | '/'
@@ -163,6 +187,7 @@ export interface FileRouteTypes {
     | '/products/search'
     | '/products/$id'
     | '/products/'
+    | '/products/$id_/edit'
     | '/products/search/'
   fileRoutesById: FileRoutesById
 }
@@ -173,6 +198,7 @@ export interface RootRouteChildren {
   ProductsSearchRouteRoute: typeof ProductsSearchRouteRouteWithChildren
   ProductsIdRoute: typeof ProductsIdRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
+  ProductsIdEditRoute: typeof ProductsIdEditRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -181,6 +207,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProductsSearchRouteRoute: ProductsSearchRouteRouteWithChildren,
   ProductsIdRoute: ProductsIdRoute,
   ProductsIndexRoute: ProductsIndexRoute,
+  ProductsIdEditRoute: ProductsIdEditRoute,
 }
 
 export const routeTree = rootRoute
@@ -197,7 +224,8 @@ export const routeTree = rootRoute
         "/about",
         "/products/search",
         "/products/$id",
-        "/products/"
+        "/products/",
+        "/products/$id_/edit"
       ]
     },
     "/": {
@@ -217,6 +245,9 @@ export const routeTree = rootRoute
     },
     "/products/": {
       "filePath": "products/index.tsx"
+    },
+    "/products/$id_/edit": {
+      "filePath": "products/$id_.edit.tsx"
     },
     "/products/search/": {
       "filePath": "products/search/index.tsx",
