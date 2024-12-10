@@ -40,6 +40,7 @@ function Edit() {
 	const product = productQuery.data;
 
 	const productMutation = useMutation({
+		mutationKey: ["products", id],
 		mutationFn: (productData: Partial<ProductResponse>) => {
 			return fetch(`https://dummyjson.com/products/${id}`, {
 				method: "PUT",
@@ -55,9 +56,12 @@ function Edit() {
 		const userData = Object.fromEntries(formData);
 
 		productMutation.mutate(userData, {
+			onError: (error) => {
+				alert("Error updating product");
+				console.error(error);
+			},
 			onSuccess: () => {
 				alert("Product updated successfully!");
-				formData.reset();
 				queryClient.invalidateQueries({
 					queryKey: productsQueries.all(),
 				});
