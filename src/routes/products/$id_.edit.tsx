@@ -69,10 +69,50 @@ function Edit() {
 		<div className="p-4 bg-opacity-20 bg-slate-300 rounded-xl">
 			<h1 className="text-3xl">Edit: {product.title}</h1>
 			<form action={handleSubmit}>
-				<input type="text" name="title" value={product.title} />
-				<input type="text" name="description" value={product.description} />
-				<input type="text" name="price" value={product.price} />
-				<input type="text" name="category" value={product.category} />
+				<div className="mb-4">
+					<label htmlFor="title">Title</label>
+					<br />
+					<input
+						type="text"
+						name="title"
+						className="w-full"
+						value={product.title}
+					/>
+				</div>
+
+				<div className="mb-4">
+					<label htmlFor="description">Description</label>
+					<br />
+					<input
+						type="text"
+						name="description"
+						className="w-full"
+						value={product.description}
+					/>
+				</div>
+
+				<div className="mb-4">
+					<label htmlFor="price">Price</label>
+					<br />
+					<input
+						type="text"
+						name="price"
+						className="w-full"
+						value={product.price}
+					/>
+				</div>
+
+				<div className="mb-4">
+					<label htmlFor="category">Category</label>
+					<br />
+					<input
+						type="text"
+						name="category"
+						className="w-full"
+						value={product.category}
+					/>
+				</div>
+
 				<button type="submit">Submit</button>
 			</form>
 		</div>
